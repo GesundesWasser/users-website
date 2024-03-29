@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>User Authentication</title>
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+  <h1>User Authentication</h1>
+  <div id="register-form">
+    <h2>Register</h2>
+    <input type="text" id="register-username" placeholder="Username"><br>
+    <input type="password" id="register-password" placeholder="Password"><br>
+    <button onclick="registerUser()">Register</button>
+    <p id="register-message"></p>
+  </div>
+  <div id="login-form">
+    <h2>Login</h2>
+    <input type="text" id="login-username" placeholder="Username"><br>
+    <input type="password" id="login-password" placeholder="Password"><br>
+    <button onclick="loginUser()">Login</button>
+    <p id="login-message"></p>
+  </div>
+  <script src="script.js"></script>
+</body>
+</html>
