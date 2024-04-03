@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Protected Page</title>
+</head>
+<body>
+    <h1>Welcome to the Protected Page</h1>
+    <div id="content"></div>
+
+    <script>
+        // Function to retrieve JWT token from localStorage
+        const getToken = () => {
+            return localStorage.getItem('token');
+        };
+
+        // Function to fetch protected data from the server
+// Function to fetch protected data from the server
+const fetchData = () => {
+    const token = getToken();
+    if (!token) {
+        alert('No token found. Please log in.');
+        // Redirect to login page if token is missing
+        return;
+    }
+
+    console.log('Sending request with token:', token);
+
+    // Fetch data from protected endpoint
+    fetch('http://0.0.0.0:3000/auth/protected', {
+        method: 'GET',
+        headers: {
+            'Authorization': 'Bearer ' + token
+        }
+    })
+    .then(response => {
+        console.log('Response status:', response.status);
+        if (response.ok) {
+            return response.json();
+        } else {
+            throw new Error('Failed to fetch data');
+        }
+    })
+    .then(data => {
+        console.log('Data received:', data);
+        // Display protected content
+        const contentElement = document.getElementById('content');
+        contentElement.innerHTML = `<p>${data.message}</p><p>Username: ${data.username}</p>`;
+    })
+    .catch(error => {
+        console.error('Error:', error);
+        alert('Failed to fetch data. Please try again.');
+        // Redirect to login page on error
+    });
+};
+
+        // Call fetchData function when the page loads
+        window.onload = fetchData;
+    </script>
+</body>
+</html>

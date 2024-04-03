@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login</title>
+    <script src="https://unpkg.com/petite-vue"></script>
+</head>
+<body>
+    <div id="app" v-data>
+        <h1>Login</h1>
+        <form @submit.prevent="login">
+            <div>
+                <label for="username">Username:</label>
+                <input type="text" id="username" v-model="username">
+            </div>
+            <div>
+                <label for="password">Password:</label>
+                <input type="password" id="password" v-model="password">
+            </div>
+            <button type="submit">Login</button>
+        </form>
+    </div>
+
+    <script>
+        // Initialize Petite-Vue
+        PetiteVue.createApp({
+            // Data properties
+            username: '',
+            password: '',
+            // Method to handle login
+            login() {
+                // Log the JSON data being sent to the server
+                console.log('Sending JSON data to server:', {
+                    username: this.username,
+                    password: this.password
+                });
+
+                const data = {
+                    username: this.username,
+                    password: this.password
+                };
+
+                fetch('http://0.0.0.0:3000/auth/login', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify(data)
+                })
+                .then(response => {
+                    console.log('Response received:', response);
+                    if (response.ok) {
+                        // Login successful, extract JWT token from response
+                        return response.json();
+                    } else {
+                        console.log('Login failed:', response.statusText);
+                        alert('Login failed. Please try again.');
+                    }
+                })
+                .then(data => {
+                    // Store token in localStorage
+                    localStorage.setItem('token', data.token);
+                    console.log('Token stored:', data.token);
+                    // Redirect to protected page
+                    window.location.href = '/protected.html';
+                })
+                .catch(error => {
+                    console.error('Error:', error);
+                    alert('An error occurred. Please try again later.');
+                });
+            }
+        }).mount();
+    </script>
+</body>
+</html>
